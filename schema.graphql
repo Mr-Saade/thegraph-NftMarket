@@ -1,0 +1,46 @@
+type Account @entity {
+  id: Bytes! # Unique identifier for the account (Ethereum address)
+  listingsCancelled: [ListingCancelled!] @derivedFrom(field: "seller")
+  nftsBought: [NftBought!] @derivedFrom(field: "buyer")
+  nftsListed: [NftListed!]! @derivedFrom(field: "nftOwner")
+  activeItems: [ActiveItem!] @derivedFrom(field: "seller")
+  proceedsWithdraws: [ProceedsWithdraw!] @derivedFrom(field: "seller")
+}
+
+type ListingCancelled @entity(immutable: true) {
+  id: ID!
+  _tokenAddress: Bytes! # address
+  _tokenId: BigInt! # uint256
+  seller: Account!
+}
+
+type NftBought @entity(immutable: true) {
+  id: ID!
+  buyer: Account!
+  _tokenAddress: Bytes! # address
+  _price: BigInt! # uint256
+  _tokenId: BigInt! # uint256
+}
+
+type NftListed @entity(immutable: true) {
+  id: ID!
+  _tokenAddress: Bytes! # address
+  nftOwner: Account!
+  _price: BigInt! # uint256
+  _tokenId: BigInt! # uint256
+}
+
+type ActiveItem @entity {
+  id: ID!
+  buyer: Account
+  seller: Account!
+  _tokenAddress: Bytes! # address
+  _tokenId: BigInt! # uint256
+  _price: BigInt!
+}
+
+type ProceedsWithdraw @entity(immutable: true) {
+  id: ID! # Unique identifier for the withdrawal event
+  seller: Account! # The account that is withdrawing proceeds
+  amount: BigInt! # The amount of proceeds withdrawn
+}

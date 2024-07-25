@@ -1,0 +1,56 @@
+HomePage-
+    -Show current nft listings
+    -If you are the owner of the nft, you can update the listing 
+    -If you are not the owner of the nft, you can buy the nft
+
+Sell Page
+    -You can list nft on the marketplace
+
+Using the graph
+-We will index our events into the graph
+-Query the graph 
+NOTE; We need to have an active item table so that takes in the listed nfts from the listednft table so that when an nft
+gets bought or deleted , we can handle it in our active item table and update our UI accordingly
+
+Anytime you update your schema file,  you run the `graph codegen` command to update your generated files.
+
+In our itemLIsted handler, whenever an item is listed, we need to save the item on our garph and update our active item
+We also need a unique id for all of our tokens in our schema and to compute that in our mapping.ts we can concatenate the tokenId +
+tokenAddress to get a unique id for each token.
+The way we can tell if an NFT is on the market is if the activeitem has a dead address `0x000....dEaD` with 36 zeros.
+, it has been cancelled, 
+if it has an empty buyer, that means it's still on the market and if it has an actual/real buyer address thus other than the dead
+address / empty buyer address, it means it's been bought.
+
+Active item table should have
+-id of type id
+-buyer
+-seller
+-tokenAddress
+-tokenPrice
+-tokenId
+
+ItemListed table
+-id of type id
+-seller
+-tokenAddress
+-tokenPrice
+-tokenId
+
+ItemCancelled
+-id of type id
+-seller
+-tokenAddress
+-tokenId
+
+ItemBought
+-id of type id
+-buyer
+-tokenAddress
+-tokenPrice
+-tokenId
+
+
+
+
+
